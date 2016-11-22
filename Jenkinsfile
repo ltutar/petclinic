@@ -1,6 +1,6 @@
 #!groovy
 
-node {
+node('!(master)') {
     properties([
             parameters([
                     string(defaultValue: 'bla', 
@@ -9,7 +9,7 @@ node {
             ]),
             pipelineTriggers([])
     ])
-	stage('Build and import') {
+	stage('Build') {
 		withEnv(["version=${version}"]) {
 			checkout scm  
 			mvn 'versions:set -DnewVersion=' + version
