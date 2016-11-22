@@ -1,6 +1,6 @@
 #!groovy
 
-node('!(master)') {
+node {
     properties([
             parameters([
                     string(defaultValue: 'bla', 
@@ -13,8 +13,11 @@ node('!(master)') {
 		withEnv(["version=${version}"]) {
 			checkout scm  
 			mvn 'versions:set -DnewVersion=' + version
-			mvn 'clean install xldeploy:import'
+			mvn 'clean install'
 		}
+	}
+	stage('XL Deploy import') {
+		mvn 'xldeploy:import'
 	}
 }
 
