@@ -9,15 +9,12 @@ node {
             ]),
             pipelineTriggers([])
     ])
-	stage('Build') {
+	stage('Build and import') {
 		withEnv(["version=${version}"]) {
 			checkout scm  
 			mvn 'versions:set -DnewVersion=' + version
-			mvn 'clean install'
+			mvn 'clean install xldeploy:import'
 		}
-	}
-	stage('XL Deploy import') {
-		mvn 'xldeploy:import'
 	}
 }
 
