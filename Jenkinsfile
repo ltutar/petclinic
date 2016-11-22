@@ -1,7 +1,7 @@
 node {
     properties([
             parameters([
-                    string(defaultValue: 'bla', 
+               string(defaultValue: 'bla', 
 			   description: 'Version from XLR', 
 			   name : 'version')
             ]),
