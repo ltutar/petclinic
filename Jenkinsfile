@@ -1,11 +1,23 @@
+#!groovy
+
 node {
-    stage('Build and import') {
-                checkout scm  
-                mvn 'versions:set -DnewVersion=1.1.1'
-                mvn 'clean install xldeploy:import'
-    }
+    properties([
+            parameters([
+                    string(defaultValue: 'bla', 
+			   description: 'Version from XLR', 
+			   name : 'version')
+            ]),
+            pipelineTriggers([])
+    ])
+	stage('Build and import') {
+		withEnv(["version=${version}"]) {
+			checkout scm  
+			mvn 'versions:set -DnewVersion=' + version
+			mvn 'clean install xldeploy:import'
+		}
+	}
 }
 
 def mvn(args) {
-    sh "mvn ${args}"
+	sh "${tool 'Maven 3'}/bin/mvn ${args}"
 }
